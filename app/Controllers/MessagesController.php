@@ -26,6 +26,7 @@ class MessagesController extends Container
     protected $plugin_path = 'plugins/mailboxes-admin';
     protected $template_path = '/templates/extends/mailboxes';
     protected $mailboxes_path = '/mailboxes';
+    protected $mailbox_filepath = '/mailbox.md';
     protected $message_filepath = '/message.md';
     protected $message_cleancopy = true;
 
@@ -39,6 +40,13 @@ class MessagesController extends Container
     {
         // Get mailbox from request query params
         $mailbox = $request->getQueryParams()['mailbox'];
+        $mailbox_data['title'] = $mailbox;
+
+        if (!empty($mailbox)) {
+          $mailbox_file = PATH['project'] . $this->mailboxes_path . '/' . $mailbox . '/' . $this->mailbox_filepath;
+          if (Filesystem::has($mailbox_file))
+            $mailbox_data = $this->serializer->decode(Filesystem::read($mailbox_file), 'frontmatter');
+        }
 
         $messages = [];
         $messages_list = Filesystem::listContents(PATH['project'] . $this->mailboxes_path . '/' . $mailbox);
@@ -74,7 +82,7 @@ class MessagesController extends Container
                     ],
                     'mailbox' => [
                         'link' => $this->router->pathFor('admin.messages.index') . '?mailbox=' . $mailbox,
-                        'title' => __('mailboxes_admin_active_mailbox') . ': ' . $mailbox,
+                        'title' => __('mailboxes_admin_active_mailbox') . ': ' . $mailbox_data['title'],
                         'active' => false
                     ],
                 ],
