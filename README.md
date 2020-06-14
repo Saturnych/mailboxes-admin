@@ -29,4 +29,4 @@ The following dependencies need to be installed for Mailboxes Admin Plugin.
 
 ## LICENSE
 [The MIT License (MIT)](https://github.com/Saturnych/mailboxes-admin/blob/master/LICENSE.txt)
-Copyright (c) 2018-2020 [Sergey Romanenko](https://github.com/Awilum)
+Copyright (c) 2020 [Denis Glebko](https://github.com/Saturnych)
