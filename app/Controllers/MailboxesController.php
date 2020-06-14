@@ -136,7 +136,7 @@ class MailboxesController extends Container
 
         // Generate UUID
         $mailbox['uuid'] = Uuid::uuid4()->toString();
-
+        $mailbox['title'] = $post_data['title'];
         $mailbox['created_at'] = (string) date($this->registry->get('flextype.settings.date_format'), time());
         $mailbox['created_by'] = Session::get('uuid');
 
