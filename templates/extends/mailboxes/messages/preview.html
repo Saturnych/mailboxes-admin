@@ -1,0 +1,10 @@
+{% extends "plugins/mailboxes-admin/templates/partials/base.html" %}
+
+{% block content %}
+    {% for key, value in mailbox_data %}
+        <div>
+            <h4>{{ key }}</h4>
+            {{ value }}
+        </div>
+    {% endfor %}
+{% endblock %}
