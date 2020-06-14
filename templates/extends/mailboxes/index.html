@@ -1,13 +1,13 @@
 {% extends "plugins/mailboxes-admin/templates/partials/base.html" %}
 
 {% block content %}
-    {% if (messages_list | length > 0) %}
+    {% if (mailboxes_list | length > 0) %}
         <table class="table">
             <thead>
                 <tr>
                     <th></th>
                     <th>
-                        {{ tr('mailboxes_admin_message') }}
+                        {{ tr('mailboxes_admin_mailbox') }}
                     </th>
                     <th>
                         {{ tr('mailboxes_admin_date') }}
@@ -16,44 +16,48 @@
                 </tr>
             </thead>
             <tbody>
-                {% if messages_list | length > 0 %}
-                    {% for message in messages_list %}
-                        <tr>
-                            <td class="w-1 text-center">
-                                <i class="icon">{{ icon('far fa-envelope') }}</i>
-                            </td>
-                            <td class="pl-0">
-                                <a href="{{ path_for('admin.messages.preview') }}?id={{ message.dirname }}&mailbox={{ mailbox }}">{{ message.dirname ?? message.uuid }}</a>
-                            </td>
-                            <td class="pl-0">
-                                {{ message.created_at }}
-                            </td>
-                            <td class="text-right">
-                                <button type="button" class="js-dropdown-btn" data-dropdown="dropdown-{{ message.dirname ?? message.uuid }}">
-                                    <i class="icon">{{ icon('fas fa-ellipsis-h') }}</i>
-                                </button>
-                                <div id="dropdown-{{ message.dirname ?? message.uuid }}" class="dropdown">
+                {% for key, mailbox in mailboxes_list %}
+                    <tr>
+                        <td class="w-1 text-center">
+                            <i class="icon">{{ icon('fas fa-box') }}</i>
+                        </td>
+                        <td class="pl-0">
+                            <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox.dirname }}">{{ mailbox.title ?? mailbox.dirname }}</a>
+                        </td>
+                        <td class="pl-0">
+                            {{ mailbox.created_at }}
+                        </td>
+                        <td class="text-right">
+                            <button type="button" class="js-dropdown-btn" data-dropdown="dropdown-{{ mailbox.dirname ?? mailbox.uuid }}">
+                                <i class="icon">{{ icon('fas fa-ellipsis-h') }}</i>
+                            </button>
+                            <div id="dropdown-{{ mailbox.dirname }}" class="dropdown">
+                                  <a class="dropdown__item" href="{{ path_for('admin.mailboxes.edit') }}?id={{ mailbox.dirname ?? mailbox.uuid }}">
+                                    <i class="icon icon--white mr-3">{{ icon('fas fa-edit') }}</i>
+                                    {{ tr('themes_admin_edit') }}</a>
+                                    <a class="dropdown__item" href="{{ path_for('admin.mailboxes.rename') }}?id={{ mailbox.dirname ?? mailbox.uuid }}">
+                                        <i class="icon icon--white mr-3">{{ icon('fas fa-font') }}</i>
+                                        {{ tr('mailboxes_admin_rename') }}</a>
+                                    <div class="dropdown__divider"></div>
                                     <a class="dropdown__item" href="javascript:;" onclick="event.preventDefault();
-                                    deleteMessage('{{ message.dirname ?? message.uuid }}', {{ loop.index0 }});">
-                                        <i class="icon icon--white mr-3">{{ icon('fas fa-trash-alt') }}</i>
-                                        {{ tr('mailboxes_admin_delete') }}</a>
-                                    <form id="delete-message-id-{{ message.dirname }}" action="{{ path_for('admin.messages.deleteProcess') }}" method="POST" style="display: none;">
-                                        {{ csrf() }}
-                                        <input type="hidden" name="id" value="{{ message.dirname ?? message.uuid }}">
-                                        <input type="hidden" name="mailbox" value="{{ mailbox }}">
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
+                                        deleteMailbox('{{ mailbox.dirname ?? mailbox.uuid }}', {{ loop.index0 }});">
+                                            <i class="icon icon--white mr-3">{{ icon('fas fa-trash-alt') }}</i>
+                                            {{ tr('mailboxes_admin_delete') }}</a>
+                                <form id="delete-mailbox-id-{{ mailbox.dirname }}" action="{{ path_for('admin.mailboxes.deleteProcess') }}" method="POST" style="display: none;">
+                                    {{ csrf() }}
+                                    <input type="hidden" name="id" value="{{ mailbox.dirname ?? mailbox.uuid }}">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <div class="flex justify-center items-center text-center h-full">
+        <div class="text-center flex justify-center items-center h-full">
             <div>
                 <i class="icon icon--4xl">{{ icon('fas fa-envelope') }}</i>
-                <h3 class="text-2xl pt-4 pb-8">{{ tr('mailboxes_admin_you_have_not_created_any_messages_yet') }}</h3>
+                <h3 class="text-2xl pt-4 pb-8">{{ tr('mailboxes_admin_you_have_no_mailboxes') }}</h3>
             </div>
         </div>
     {% endif %}
@@ -61,17 +65,17 @@
 
 {% block tail %}
     <script>
-        function deleteMessage(id, row_num) {
+        function deleteMailbox(id, row_num) {
             if (dropdown.length > 0) {
                 for (let i = 0; i < dropdown.length; i++) {
                     dropdown[i].hide();
                 }
             }
             Swal.fire(
-                {title: "{{ tr('mailboxes_admin_confirmation_required') }}", text: "{{ tr('mailboxes_admin_confirmation_required_for_message_delete') }}: " + id, showCancelButton: true, confirmButtonText: "{{ tr('mailboxes_admin_yes_iam_sure')|raw }}", cancelButtonText: "{{ tr('mailboxes_admin_cancel') }}", reverseButtons: true}
+                {title: "{{ tr('mailboxes_admin_confirmation_required') }}", text: "{{ tr('mailboxes_admin_confirmation_required_for_mailbox_delete') }}: "+id, showCancelButton: true, confirmButtonText: "{{ tr('mailboxes_admin_yes_iam_sure')|raw }}", cancelButtonText: "{{ tr('mailboxes_admin_cancel') }}", reverseButtons: true}
             ).then((result) => {
                 if (result.value) {
-                    document.getElementById('delete-message-id-' + id).submit();
+                    document.getElementById('delete-mailbox-id-' + id).submit();
                 }
             });
         }
