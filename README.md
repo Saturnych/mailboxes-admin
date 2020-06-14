@@ -1,14 +1,8 @@
 <h1 align="center">Mailboxes Admin Plugin for <a href="https://flextype.org/">Flextype</a></h1>
 
 <p align="center">
-<a href="https://github.com/Saturnych/mailboxes-admin/releases">
-<img alt="Version" src="https://img.shields.io/github/release/Saturnych/mailboxes-admin.svg?label=version&color=black">
-</a> 
 <a href="https://github.com/Saturnych/mailboxes-admin">
 <img src="https://img.shields.io/badge/license-MIT-blue.svg?color=black" alt="License">
-</a> 
-<a href="https://github.com/Saturnych/mailboxes-admin">
-<img src="https://img.shields.io/github/downloads/Saturnych/mailboxes-admin/total.svg?color=black" alt="Total downloads">
 </a> 
 <a href="https://github.com/flextype/flextype">
 <img src="https://img.shields.io/badge/Flextype-0.9.8-green.svg?color=black" alt="Flextype">
