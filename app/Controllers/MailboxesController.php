@@ -130,7 +130,6 @@ class MailboxesController extends Container
                 'menu_item' => 'mailboxes',
                 'entry' => $entry,
                 'entries' => $entries,
-                'mailbox' => $mailbox,
                 'links' =>  [
                     'mailboxes' => [
                         'link' => $this->router->pathFor('admin.mailboxes.index'),
