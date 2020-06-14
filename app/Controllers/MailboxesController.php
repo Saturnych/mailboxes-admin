@@ -22,7 +22,7 @@ use function trim;
  * @property Router $router
  * @property Cache $cache
  * @property Mailboxes $mailboxes
- * @property Fieldsets $fieldsets
+ * @property Entries $entries
  */
 class MailboxesController extends Container
 {
@@ -30,7 +30,6 @@ class MailboxesController extends Container
     protected $template_path = '/templates/extends/mailboxes';
     protected $entries_path = '/entries';
     protected $entry_filepath = '/entry.md';
-    protected $fieldsets_path = '/fieldsets';
     protected $mailboxes_path = '/mailboxes';
     protected $mailbox_filepath = '/mailbox.md';
 
@@ -111,7 +110,7 @@ class MailboxesController extends Container
         // Get entries files
         $entries_list = Filesystem::listContents(PATH['project'] . $this->entries_path, true);
 
-        // If there is any fieldset file then go...
+        // If there is any entry file then go...
         if (count($entries_list) > 0) {
             foreach ($entries_list as $entry) {
               $file = $entry['path'] . $this->entry_filepath;
@@ -131,8 +130,6 @@ class MailboxesController extends Container
                 'menu_item' => 'mailboxes',
                 'entry' => $entry,
                 'entries' => $entries,
-                'fieldset' => $fieldset,
-                'fieldsets' => $fieldsets,
                 'mailbox' => $mailbox,
                 'links' =>  [
                     'mailboxes' => [
@@ -165,7 +162,6 @@ class MailboxesController extends Container
         $mailbox['uuid'] = Uuid::uuid4()->toString();
 
         if (!empty($post_data['entry'])) $mailbox['entry'] = $post_data['entry'];
-        if (!empty($post_data['fieldset'])) $mailbox['fieldset'] = $post_data['fieldset'];
 
         $mailbox['created_at'] = (string) date($this->registry->get('flextype.settings.date_format'), time());
         $mailbox['created_by'] = Session::get('uuid');
@@ -187,7 +183,7 @@ class MailboxesController extends Container
             $this->flash->addMessage('error', __('mailboxes_admin_message_mailbox_was_not_created'));
         }
 
-        return $response->withRedirect($this->router->pathFor('admin.mailboxes.index')); //  . '?fieldset=' . $fieldset
+        return $response->withRedirect($this->router->pathFor('admin.mailboxes.index'));
     }
 
 
@@ -282,7 +278,6 @@ class MailboxesController extends Container
                 $this->plugin_path . $this->template_path. '/rename.html',
                 [
                     'menu_item' => 'mailboxes',
-                    'fieldset' => $fieldset,
                     'mailbox' => $mailbox,
                     'id_current' => $id,
                     'links' => [
