@@ -157,6 +157,10 @@ class MailboxesController extends Container
             $this->flash->addMessage('error', __('mailboxes_admin_message_mailbox_was_not_created'));
         }
 
+        if (isset($post_data['create-and-edit'])) {
+            return $response->withRedirect($this->router->pathFor('admin.mailboxes.edit') . '?id=' . $id);
+        }
+
         return $response->withRedirect($this->router->pathFor('admin.mailboxes.index'));
     }
 
@@ -279,7 +283,7 @@ class MailboxesController extends Container
             // Get data from POST
             $post_data = $request->getParsedBody();
 
-            $id = mb_strtolower($post_data['id']);            
+            $id = mb_strtolower($post_data['id']);
             $id_current = $post_data['id_current'];
 
             if (Filesystem::has(PATH['project'] . $this->mailboxes_path . '/' . $id_current) && !Filesystem::has(PATH['project'] . '/mailboxes/' . $id)) {
