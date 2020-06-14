@@ -19,11 +19,7 @@ $app->group('/' . $admin_route, function () use ($app) : void {
 
     // MessagesController
     $app->get('/mailboxes/messages', 'MessagesController:index')->setName('admin.messages.index');
-    $app->get('/mailboxes/messages/add', 'MessagesController:add')->setName('admin.messages.add');
-    $app->post('/mailboxes/messages/add', 'MessagesController:addProcess')->setName('admin.messages.addProcess');
-    $app->get('/mailboxes/messages/edit', 'MessagesController:edit')->setName('admin.messages.edit');
-    $app->post('/mailboxes/messages/edit', 'MessagesController:editProcess')->setName('admin.messages.addProcess');
-    $app->post('/mailboxes/messages/duplicate', 'MessagesController:duplicateProcess')->setName('admin.messages.duplicateProcess');
+    $app->get('/mailboxes/messages/preview', 'MessagesController:preview')->setName('admin.messages.preview');
     $app->post('/mailboxes/messages/delete', 'MessagesController:deleteProcess')->setName('admin.messages.deleteProcess');
 
 })->add(new AdminPanelAuthMiddleware($flextype));
