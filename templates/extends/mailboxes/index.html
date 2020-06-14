@@ -22,7 +22,7 @@
                             <i class="icon">{{ icon('fas fa-box') }}</i>
                         </td>
                         <td class="pl-0">
-                            <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox.dirname }}">{{ mailbox.title }}</a>
+                            <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox.dirname }}">{{ mailbox.title ?? mailbox.dirname }}</a>
                         </td>
                         <td class="pl-0">
                             {{ mailbox.created_at }}
