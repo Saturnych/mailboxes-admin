@@ -1,0 +1,48 @@
+{% extends "plugins/themes-admin/templates/partials/base.html" %}
+
+{% block content %}
+    <form method="post" id="form">
+        {{ csrf() }}
+        <div class="flex row">
+            <div class="col w-full lg:w-4/12">
+                <div class="form-group">
+                    <label for="id" class="form-control-title">{{ tr('mailboxes_admin_name') }}</label>
+                    <input type="text" id="id" name="id" value="" class="form-control" required="required" data-parsley-minlength="1" data-parsley-error-message="{{ tr('mailboxes_admin_error_name_empty_input') }}" data-parsley-required="true">
+                    <small>{{ tr('mailboxes_admin_help_text_for_mailboxes_name') }}</small>
+                </div>
+                {% if (entries  | length > 0) %}
+                <div class="form-group">
+                    <label for="type" class="form-control-title">{{ tr('mailboxes_admin_entry') }}</label>
+                    <select class="form-control js-select" name="entry">
+                    <option value="">{{ tr('mailboxes_admin_root') }}</option> 
+                    {% for key, entry in entries %}
+                        <option value="{{ entry.dirname }}">{{ entry.title }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                {% if (fieldsets | length > 0) %}
+                <div class="form-group">
+                    <label for="type" class="form-control-title">{{ tr('mailboxes_admin_fieldset') }}</label>
+                    <select class="form-control js-select" name="fieldset">
+                    {% for key, fieldset in fieldsets %}
+                        <option value="{{ key }}">{{ fieldset.title }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="button-group">
+                    <div class="button-dropdown">
+                        <input type="submit" id="create" name="create" value="{{ tr('themes_admin_create') }}" class="button">
+                        <a href="javascript:;" class="button js-dropdown-btn" data-dropdown="dropdown-list-create-new-template">
+                            <i class="icon icon--white">{{ icon('fas fa-sort-down') }}</i>
+                        </a>
+                        <div id="dropdown-list-create-new-template" class="dropdown">
+                            <input type="submit" id="create-and-edit" name="create-and-edit" value="{{ tr('themes_admin_create_and_edit') }}" class="dropdown__item">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

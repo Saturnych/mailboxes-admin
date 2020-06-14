@@ -1,0 +1,5 @@
+# enabled: true or false to disable the plugin
+enabled: true
+
+# Form Mail Admin plugin priority
+priority: 50

@@ -1,0 +1,16 @@
+name: Mailboxes Admin
+version: 1.0.0
+description: Mailboxes Admin plugin to manage mail messages.
+icon: fas fa-envelope
+author:
+  name: Denis Glebko
+  email: saturnych@gmail.com
+  url: https://saturnych.ru
+homepage: https://github.com/Saturnych/mailboxes-admin
+bugs: https://github.com/Saturnych/mailboxes-admin/issues
+license: MIT
+
+dependencies:
+  flextype: 0.9.8
+  twig: '>=1.0.0'
+  admin: '>=1.0.0'

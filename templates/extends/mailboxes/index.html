@@ -1,0 +1,89 @@
+{% extends "plugins/mailboxes-admin/templates/partials/base.html" %}
+
+{% block content %}
+    {% if (mailboxes_list | length > 0) %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        {{ tr('mailboxes_admin_mailbox') }}
+                    </th>
+                    <th>
+                        {{ tr('mailboxes_admin_entry') }}
+                    </th>
+                    <th>
+                        {{ tr('mailboxes_admin_date') }}
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, mailbox in mailboxes_list %}
+                    <tr>
+                        <td class="w-1 text-center">
+                            <i class="icon">{{ icon('fas fa-box') }}</i>
+                        </td>
+                        <td class="pl-0">
+                            <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox.dirname }}">{{ mailbox.dirname ?? mailbox.uuid }}</a>
+                        </td>
+                        <td class="pl-0">
+                            {{ mailbox.entry ?? tr('mailboxes_admin_root') }} 
+                        </td>
+                        <td class="pl-0">
+                            {{ mailbox.created_at }}
+                        </td>
+                        <td class="text-right">
+                            <button type="button" class="js-dropdown-btn" data-dropdown="dropdown-{{ mailbox.dirname ?? mailbox.uuid }}">
+                                <i class="icon">{{ icon('fas fa-ellipsis-h') }}</i>
+                            </button>
+                            <div id="dropdown-{{ mailbox.dirname }}" class="dropdown">
+                                  <a class="dropdown__item" href="{{ path_for('admin.mailboxes.edit') }}?id={{ mailbox.dirname ?? mailbox.uuid }}">
+                                    <i class="icon icon--white mr-3">{{ icon('fas fa-edit') }}</i>
+                                    {{ tr('themes_admin_edit') }}</a>
+                                    <a class="dropdown__item" href="{{ path_for('admin.mailboxes.rename') }}?id={{ mailbox.dirname ?? mailbox.uuid }}">
+                                        <i class="icon icon--white mr-3">{{ icon('fas fa-font') }}</i>
+                                        {{ tr('mailboxes_admin_rename') }}</a>
+                                    <div class="dropdown__divider"></div>
+                                    <a class="dropdown__item" href="javascript:;" onclick="event.preventDefault();
+                                        deleteMailbox('{{ mailbox.dirname ?? mailbox.uuid }}', {{ loop.index0 }});">
+                                            <i class="icon icon--white mr-3">{{ icon('fas fa-trash-alt') }}</i>
+                                            {{ tr('mailboxes_admin_delete') }}</a>
+                                <form id="delete-mailbox-id-{{ mailbox.dirname }}" action="{{ path_for('admin.mailboxes.deleteProcess') }}" method="POST" style="display: none;">
+                                    {{ csrf() }}
+                                    <input type="hidden" name="id" value="{{ mailbox.dirname ?? mailbox.uuid }}">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="text-center flex justify-center items-center h-full">
+            <div>
+                <i class="icon icon--4xl">{{ icon('fas fa-palette') }}</i>
+                <h3 class="text-2xl pt-4 pb-8">{{ tr('mailboxes_admin_you_have_no_mailboxes') }}</h3>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block tail %}
+    <script>
+        function deleteMailbox(id, row_num) {
+            if (dropdown.length > 0) {
+                for (let i = 0; i < dropdown.length; i++) {
+                    dropdown[i].hide();
+                }
+            }
+            Swal.fire(
+                {title: "{{ tr('mailboxes_admin_confirmation_required') }}", text: "{{ tr('mailboxes_admin_confirmation_required_for_mailbox_delete') }}: "+id, showCancelButton: true, confirmButtonText: "{{ tr('mailboxes_admin_yes_iam_sure')|raw }}", cancelButtonText: "{{ tr('mailboxes_admin_cancel') }}", reverseButtons: true}
+            ).then((result) => {
+                if (result.value) {
+                    document.getElementById('delete-mailbox-id-' + id).submit();
+                }
+            });
+        }
+    </script>
+{% endblock %}

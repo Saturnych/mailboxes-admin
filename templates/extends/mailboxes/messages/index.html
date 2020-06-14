@@ -1,0 +1,93 @@
+{% extends "plugins/themes-admin/templates/partials/base.html" %}
+
+{% block content %}
+    {% if (messages_list | length > 0) %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        {{ tr('mailboxes_admin_message') }}
+                    </th>
+                    <th>
+                        {{ tr('mailboxes_admin_date') }}
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if messages_list | length > 0 %}
+                    {% for message in messages_list %}
+                        <tr>
+                            <td class="w-1 text-center">
+                                <i class="icon">{{ icon('far fa-envelope') }}</i>
+                            </td>
+                            <td class="pl-0">
+                                <a href="{{ path_for('admin.messages.edit') }}?id={{ message.dirname }}&mailbox={{ mailbox }}">{{ message.dirname ?? message.uuid }}</a>
+                            </td>
+                            <td class="pl-0">
+                                {{ message.created_at }}
+                            </td>
+                            <td class="text-right">
+                                <button type="button" class="js-dropdown-btn" data-dropdown="dropdown-{{ message.dirname ?? message.uuid }}">
+                                    <i class="icon">{{ icon('fas fa-ellipsis-h') }}</i>
+                                </button>
+                                <div id="dropdown-{{ message.dirname ?? message.uuid }}" class="dropdown">
+                                    <a class="dropdown__item" href="{{ path_for('admin.messages.edit') }}?id={{ message.dirname ?? message.uuid }}&mailbox={{ mailbox }}">
+                                        <i class="icon icon--white mr-3">{{ icon('fas fa-edit') }}</i>
+                                        {{ tr('mailboxes_admin_edit') }}</a>
+                                    <a class="dropdown__item" href="javascript:;" onclick="event.preventDefault();
+                                document.getElementById('duplicate-message-id-{{ message.dirname ?? message.uuid }}').submit();">
+                                        <i class="icon icon--white mr-3">{{ icon('fas fa-copy') }}</i>
+                                        {{ tr('mailboxes_admin_duplicate') }}</a>
+                                    <div class="dropdown__divider"></div>
+                                    <a class="dropdown__item" href="javascript:;" onclick="event.preventDefault();
+                                    deleteMessage('{{ message.dirname ?? message.uuid }}', {{ loop.index0 }});">
+                                        <i class="icon icon--white mr-3">{{ icon('fas fa-trash-alt') }}</i>
+                                        {{ tr('mailboxes_admin_delete') }}</a>
+                                    <form id="duplicate-message-id-{{ message.dirname ?? message.uuid }}" action="{{ path_for('admin.messages.duplicateProcess') }}" method="POST" style="display: none;">
+                                        {{ csrf() }}
+                                        <input type="hidden" name="id" value="{{ message.dirname ?? message.uuid }}">
+                                        <input type="hidden" name="mailbox" value="{{ mailbox }}">
+                                    </form>
+                                    <form id="delete-message-id-{{ message.dirname }}" action="{{ path_for('admin.messages.deleteProcess') }}" method="POST" style="display: none;">
+                                        {{ csrf() }}
+                                        <input type="hidden" name="id" value="{{ message.dirname ?? message.uuid }}">
+                                        <input type="hidden" name="mailbox" value="{{ mailbox }}">
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="flex justify-center items-center text-center h-full">
+            <div>
+                <i class="icon icon--4xl">{{ icon('fas fa-layer-group') }}</i>
+                <h3 class="text-2xl pt-4 pb-8">{{ tr('mailboxes_admin_you_have_not_created_any_messages_yet') }}</h3>
+                <a href="{{ path_for('admin.messages.add') }}?mailbox={{ mailbox }}" class="button">{{ tr('mailboxes_admin_create_new_message') }}</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block tail %}
+    <script>
+        function deleteMessage(id, row_num) {
+            if (dropdown.length > 0) {
+                for (let i = 0; i < dropdown.length; i++) {
+                    dropdown[i].hide();
+                }
+            }
+            Swal.fire(
+                {title: "{{ tr('mailboxes_admin_confirmation_required') }}", text: "{{ tr('mailboxes_admin_confirmation_required_for_message_delete') }}: " + id, showCancelButton: true, confirmButtonText: "{{ tr('mailboxes_admin_yes_iam_sure')|raw }}", cancelButtonText: "{{ tr('mailboxes_admin_cancel') }}", reverseButtons: true}
+            ).then((result) => {
+                if (result.value) {
+                    document.getElementById('delete-message-id-' + id).submit();
+                }
+            });
+        }
+    </script>
+{% endblock %}

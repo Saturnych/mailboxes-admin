@@ -1,0 +1,33 @@
+{
+    "name": "Saturnych/mailboxes-admin",
+    "type": "project",
+    "description": "Mailboxes Admin plugin to manage mail messages.",
+    "keywords": ["mail", "admin", "plugin", "manager", "panel", "flextype", "php", "html"],
+    "homepage": "https://github.com/Saturnych/mailboxes-admin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denis Glebko",
+            "email": "saturnych@gmail.com",
+            "homepage": "http://saturnych.ru"
+        }
+    ],
+    "support": {
+      "issues": "https://github.com/Saturnych/mailboxes-admin/issues"
+    },
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "config": {
+        "apcu-autoloader": true,
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.2.0"
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "app"
+        ]
+    }
+}
