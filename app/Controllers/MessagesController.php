@@ -263,7 +263,6 @@ class MessagesController extends Container
         return $response->withRedirect($this->router->pathFor('admin.messages.index') . '?mailbox=' . $mailbox);
     }
 
-
     /**
      * Delete messages process
      *

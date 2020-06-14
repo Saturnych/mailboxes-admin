@@ -31,21 +31,6 @@ class MailboxesController extends Container
     protected $mailbox_filepath = '/mailbox.md';
 
     /**
-     * Get Mailbox ID
-     *
-     * @param array Query
-     */
-    protected function getMailboxID($query)
-    {
-        if (isset($query['id'])) {
-            $_id = $query['id'];
-        } else {
-            $_id = '';
-        }
-        return $_id;
-    }
-
-    /**
      * Index page
      *
      * @param Request  $request  PSR7 request
@@ -59,8 +44,6 @@ class MailboxesController extends Container
         if (count($mailboxes_list) > 0) {
             foreach ($mailboxes_list as $mailbox) {
                 $file = $mailbox['path'] . $this->mailbox_filepath;
-                // $mailbox['dirname']
-                // $mailbox['basename']
                 if ($mailbox['type'] == 'dir' && Filesystem::has($file)) {
                     $data = Filesystem::read($file);
                     $mess = $this->serializer->decode($data, 'frontmatter');
@@ -238,8 +221,6 @@ class MailboxesController extends Container
             return $response->withRedirect($this->router->pathFor('admin.mailboxes.index'));
         }
 
-
-
         /**
          * Rename mailbox
          *
@@ -336,7 +317,5 @@ class MailboxesController extends Container
 
             return $response->withRedirect($this->router->pathFor('admin.mailboxes.index'));
         }
-
-
 
 }
