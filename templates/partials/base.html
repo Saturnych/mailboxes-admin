@@ -1,9 +1,9 @@
 {% extends "plugins/admin/templates/partials/base.html" %}
 
 {% block admin_navigation_top_secondary %}
-    {% if is_current_path('admin.messages.index')or
-    is_current_path('admin.messages.edit')or
-    is_current_path('admin.messages.add') %}
+    {% if is_current_path('admin.mailboxes.index') or
+    is_current_path('admin.messages.index') or
+    is_current_path('admin.messages.preview') %}
         /
         <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox }}">
             <span class="pr-1 pl-1">{{ mailbox }}</span></a>
