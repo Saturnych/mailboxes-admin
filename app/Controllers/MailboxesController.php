@@ -28,7 +28,7 @@ class MailboxesController extends Container
     protected $plugin_path = 'plugins/mailboxes-admin';
     protected $template_path = '/templates/extends/mailboxes';
     protected $mailboxes_path = '/mailboxes';
-    protected $mailbox_filepath = '/mailbox.md';
+    protected $mailbox_filepath = '/mailbox.yaml';
 
     /**
      * Index page
@@ -46,7 +46,7 @@ class MailboxesController extends Container
                 $file = $mailbox['path'] . $this->mailbox_filepath;
                 if ($mailbox['type'] == 'dir' && Filesystem::has($file)) {
                     $data = Filesystem::read($file);
-                    $mess = $this->serializer->decode($data, 'frontmatter');
+                    $mess = $this->serializer->decode($data, 'yaml');
                     $mailbox = array_merge($mailbox,$mess);
                     $mailboxes[] = $mailbox;
                 }
@@ -67,7 +67,7 @@ class MailboxesController extends Container
                     ],
                 ],
                 'buttons' => [
-                    'mailboxes_get_more' => [
+                    'mailboxes_add' => [
                         'link' => $this->router->pathFor('admin.mailboxes.add'),
                         'title' => __('mailboxes_admin_mailboxes_add'),
                         'active' => true
@@ -127,7 +127,7 @@ class MailboxesController extends Container
 
         if (! Filesystem::has($path)) Filesystem::createDir($path);
 
-        $md = $this->serializer->encode($mailbox, 'frontmatter');
+        $md = $this->serializer->encode($mailbox, 'yaml');
         $file = $path . $this->mailbox_filepath;
 
         if (! Filesystem::has($file)) {
@@ -205,7 +205,7 @@ class MailboxesController extends Container
 
             $id  = (!empty($post_data['id']))?$post_data['id']:$params['id'];
             $data = $post_data['data'];
-            $mailbox = $this->serializer->decode($data, 'frontmatter');
+            $mailbox = $this->serializer->decode($data, 'yaml');
 
             if (!empty($mailbox['id']) && $id != $mailbox['id']) {
               Filesystem::rename(PATH['project'] . $this->mailboxes_path . '/' . $id, PATH['project']. $this->mailboxes_path . '/' . $mailbox['id']);
