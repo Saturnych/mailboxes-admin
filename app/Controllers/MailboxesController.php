@@ -22,14 +22,11 @@ use function trim;
  * @property Router $router
  * @property Cache $cache
  * @property Mailboxes $mailboxes
- * @property Entries $entries
  */
 class MailboxesController extends Container
 {
     protected $plugin_path = 'plugins/mailboxes-admin';
     protected $template_path = '/templates/extends/mailboxes';
-    protected $entries_path = '/entries';
-    protected $entry_filepath = '/entry.md';
     protected $mailboxes_path = '/mailboxes';
     protected $mailbox_filepath = '/mailbox.md';
 
@@ -104,32 +101,12 @@ class MailboxesController extends Container
      */
     public function add(/** @scrutinizer ignore-unused */ Request $request, Response $response) : Response
     {
-        // Init Entries
-        $entries = [];
-
-        // Get entries files
-        $entries_list = Filesystem::listContents(PATH['project'] . $this->entries_path, true);
-
-        // If there is any entry file then go...
-        if (count($entries_list) > 0) {
-            foreach ($entries_list as $entry) {
-              $file = $entry['path'] . $this->entry_filepath;
-              if ($entry['type'] == 'dir' && Filesystem::has($file)) {
-                  $data = Filesystem::read($file);
-                  $entry_data = $this->serializer->decode($data, 'frontmatter');
-                  $entry = array_merge($entry,$entry_data);
-                  $entries[] = $entry;
-              }
-            }
-        }
 
         return $this->twig->render(
             $response,
             $this->plugin_path . $this->template_path. '/add.html',
             [
                 'menu_item' => 'mailboxes',
-                'entry' => $entry,
-                'entries' => $entries,
                 'links' =>  [
                     'mailboxes' => [
                         'link' => $this->router->pathFor('admin.mailboxes.index'),
@@ -155,12 +132,10 @@ class MailboxesController extends Container
     {
         // Get data from POST
         $post_data = $request->getParsedBody();
-        $id = $post_data['id'];
+        $id = mb_strtolower($post_data['id']);
 
         // Generate UUID
         $mailbox['uuid'] = Uuid::uuid4()->toString();
-
-        if (!empty($post_data['entry'])) $mailbox['entry'] = $post_data['entry'];
 
         $mailbox['created_at'] = (string) date($this->registry->get('flextype.settings.date_format'), time());
         $mailbox['created_by'] = Session::get('uuid');
@@ -304,7 +279,7 @@ class MailboxesController extends Container
             // Get data from POST
             $post_data = $request->getParsedBody();
 
-            $id = $post_data['id'];
+            $id = mb_strtolower($post_data['id']);            
             $id_current = $post_data['id_current'];
 
             if (Filesystem::has(PATH['project'] . $this->mailboxes_path . '/' . $id_current) && !Filesystem::has(PATH['project'] . '/mailboxes/' . $id)) {

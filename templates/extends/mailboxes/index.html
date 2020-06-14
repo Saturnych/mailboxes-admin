@@ -10,9 +10,6 @@
                         {{ tr('mailboxes_admin_mailbox') }}
                     </th>
                     <th>
-                        {{ tr('mailboxes_admin_entry') }}
-                    </th>
-                    <th>
                         {{ tr('mailboxes_admin_date') }}
                     </th>
                     <th></th>
@@ -26,9 +23,6 @@
                         </td>
                         <td class="pl-0">
                             <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox.dirname }}">{{ mailbox.dirname ?? mailbox.uuid }}</a>
-                        </td>
-                        <td class="pl-0">
-                            {{ mailbox.entry ?? tr('mailboxes_admin_root') }} 
                         </td>
                         <td class="pl-0">
                             {{ mailbox.created_at }}
