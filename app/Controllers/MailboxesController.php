@@ -277,7 +277,6 @@ class MailboxesController extends Container
                 $this->plugin_path . $this->template_path. '/rename.html',
                 [
                     'menu_item' => 'mailboxes',
-                    'mailbox' => $mailbox,
                     'id_current' => $id,
                     'links' => [
                         'mailboxes' => [
