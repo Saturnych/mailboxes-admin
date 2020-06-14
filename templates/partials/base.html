@@ -4,9 +4,11 @@
     {% if is_current_path('admin.mailboxes.index') or
     is_current_path('admin.messages.index') or
     is_current_path('admin.messages.preview') %}
-        /
+        {% if mailbox %}
+            /
         <a href="{{ path_for('admin.messages.index') }}?mailbox={{ mailbox }}">
             <span class="pr-1 pl-1">{{ mailbox }}</span></a>
+        {% endif %}
         {% if id %}
             /
             <span class="pr-1 pl-1">{{ id }}</span>
