@@ -1,5 +1,5 @@
 name: Mailboxes Admin
-version: 1.0.2
+version: 1.0.2-20200624
 description: Mailboxes Admin plugin to manage mail messages.
 icon: fas fa-envelope
 author:
@@ -12,5 +12,6 @@ license: MIT
 
 dependencies:
   flextype: 0.9.8
-  twig: '>=1.0.0'
-  admin: '>=1.0.0'
+  twig: '>=1.0.4'
+  admin: '>=1.0.10'
+  acl: '>=1.1.0'  

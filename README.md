@@ -3,10 +3,10 @@
 <p align="center">
 <a href="https://github.com/Saturnych/mailboxes-admin">
 <img src="https://img.shields.io/badge/license-MIT-blue.svg?color=black" alt="License">
-</a> 
+</a>
 <a href="https://github.com/flextype/flextype">
 <img src="https://img.shields.io/badge/Flextype-0.9.8-green.svg?color=black" alt="Flextype">
-</a> 
+</a>
 </p>
 
 Mailboxes Admin plugin to manage mail messages.
@@ -18,8 +18,9 @@ The following dependencies need to be installed for Mailboxes Admin Plugin.
 | Item | Version | Download |
 |---|---|---|
 | [flextype](https://github.com/flextype/flextype) | 0.9.8 | [download](https://github.com/flextype/flextype/releases) |
-| [twig](https://github.com/flextype-plugins/twig) | >=1.0.0 | [download](https://github.com/flextype-plugins/twig/releases) |
-| [admin](https://github.com/flextype-plugins/admin) | >=1.0.0 | [download](https://github.com/flextype-plugins/admin/releases) |
+| [twig](https://github.com/flextype-plugins/twig) | >=1.0.4 | [download](https://github.com/flextype-plugins/twig/releases) |
+| [admin](https://github.com/flextype-plugins/admin) | >=1.0.10 | [download](https://github.com/flextype-plugins/admin/releases) |
+| [acl](https://github.com/flextype-plugins/acl) | >=1.1.0 | [download](https://github.com/flextype-plugins/acl/releases) |
 
 ## INSTALLATION
 
