@@ -22,8 +22,8 @@ $app->group('/' . $admin_route, function () use ($app, $flextype) : void {
     $app->get('/mailboxes/messages/preview', 'MessagesController:preview')->setName('admin.messages.preview');
     $app->post('/mailboxes/messages/delete', 'MessagesController:deleteProcess')->setName('admin.messages.deleteProcess');
 
-})->add(new AclAccountIsUserLoggedInMiddleware(['container' => $flextype, 'redirect' => 'admin.accounts.login']))
-  ->add(new AclAccountsIsUserLoggedInRolesOneOfMiddleware(['container' => $flextype,
-                                                           'redirect' => ($flextype->acl->isUserLoggedIn() ? 'admin.accounts.no-access' : 'admin.accounts.login'),
-                                                           'roles' => 'admin']))
+})->add(new AclIsUserLoggedInMiddleware(['container' => $flextype, 'redirect' => 'admin.accounts.login']))
+  ->add(new AclIsUserLoggedInRolesInMiddleware(['container' => $flextype,
+                                                'redirect' => ($flextype->acl->isUserLoggedIn() ? 'admin.accounts.no-access' : 'admin.accounts.login'),
+                                                'roles' => 'admin']))
   ->add('csrf');
